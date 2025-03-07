@@ -36,9 +36,9 @@ import prism.PrismException;
  * 
  * @author Zainab Fatmi
  */
-public class Primitive<Value> extends AbstractBisimulation<Value>{
+public class Valmari<Value> extends AbstractBisimulation<Value>{
 
-	public Primitive(PrismComponent parent) throws PrismException {
+	public Valmari(PrismComponent parent) throws PrismException {
 		super(parent);
 	}
 	
