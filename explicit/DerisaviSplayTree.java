@@ -45,9 +45,9 @@ import prism.PrismException;
  * 
  * @author Zainab Fatmi
  */
-public class ZeroDerisavi<Value> extends AbstractBisimulation<Value>{
+public class DerisaviSplayTree<Value> extends AbstractBisimulation<Value>{
 	
-	public ZeroDerisavi(PrismComponent parent) throws PrismException {
+	public DerisaviSplayTree(PrismComponent parent) throws PrismException {
 		super(parent);
 	}
 	
