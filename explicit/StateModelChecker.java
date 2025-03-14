@@ -25,7 +25,7 @@
 //	
 //==============================================================================
 
-package explicit;
+package Extension.explicit;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,6 +36,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import explicit.rewards.ConstructRewards;
 import explicit.rewards.Rewards;
@@ -128,6 +130,7 @@ public class StateModelChecker extends PrismComponent
 
 	// Do bisimulation minimisation before model checking?
 	protected boolean doBisim = false;
+	protected String algorithm;
 
 	// Do topological value iteration?
 	protected boolean doTopologicalValueIteration = false;
@@ -250,6 +253,7 @@ public class StateModelChecker extends PrismComponent
 		setGenStrat(other.getGenStrat());
 		setRestrictStratToReach(other.getRestrictStratToReach());
 		setDoBisim(other.getDoBisim());
+		setAlgorithm(other.getAlgorithm());
 		setDoIntervalIteration(other.getDoIntervalIteration());
 		setDoPmaxQuotient(other.getDoPmaxQuotient());
 	}
@@ -343,6 +347,11 @@ public class StateModelChecker extends PrismComponent
 	{
 		this.doBisim = doBisim;
 	}
+
+	public void setAlgorithm(String algo)
+ 	{
+ 		this.algorithm = algo;
+ 	}
 
 	/**
 	 * Specify whether or not to do topological value iteration.
@@ -446,7 +455,11 @@ public class StateModelChecker extends PrismComponent
 	{
 		return doBisim;
 	}
-
+	
+	public String getAlgorithm()
+ 	{
+ 		return this.algorithm;
+ 	}
 	/**
 	 * Whether or not to do topological value iteration.
 	 */
@@ -575,7 +588,25 @@ public class StateModelChecker extends PrismComponent
 			ArrayList<String> propNames = new ArrayList<String>();
 			ArrayList<BitSet> propBSs = new ArrayList<BitSet>();
 			Expression exprNew = checkMaximalPropositionalFormulas(model, expr.deepCopy(), propNames, propBSs);
-			Bisimulation<Value> bisim = new Bisimulation<>(this);
+
+			
+ 
+ 			Bisimulation<Value> bisim;
+ 			if (this.algorithm != null) {
+ 				try {
+ 					Class<?> algorithmClass = Class.forName(algorithm);
+ 					Constructor<?> constructor = algorithmClass.getConstructor(PrismComponent.class);
+ 					bisim = (Bisimulation<Value>) constructor.newInstance(this);
+ 				}
+ 				catch (InstantiationException | IllegalAccessException | InvocationTargetException | 
+ 						NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+ 					bisim = null;
+ 				} 
+ 			} else {
+ 				bisim = new Bisimulation<>(this);
+ 
+ 			}
+			
 			model = bisim.minimise(model, propNames, propBSs);
 			mainLog.println("Modified property: " + exprNew);
 			expr = exprNew;
