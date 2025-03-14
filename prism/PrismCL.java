@@ -24,7 +24,7 @@
 //	
 //==============================================================================
 
-package prism;
+package Extension.prism;
 
 import java.io.BufferedReader;
 import java.io.File;
