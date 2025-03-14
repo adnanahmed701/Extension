@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package explicit;
+package Extension.explicit;
 
 
 
@@ -51,7 +51,7 @@ public class DerisaviSplayTree<Value> extends AbstractBisimulation<Value>{
 		super(parent);
 	}
 	
-	public static final double ACCURACY = 1E-8;
+	public static final double ACCURACY = 1e-5;
 	public static final int PRECISION = 3;
 	/**
 	 * A class to represent the nodes of a splay tree.  Each node of the tree stores 
@@ -433,7 +433,7 @@ public class DerisaviSplayTree<Value> extends AbstractBisimulation<Value>{
 			}
 			id++;
 		}
-
+		mainLog.println("Minimisation: " + numStates + " to " + numBlocks + " States ");
 		DTMCSimple<Value> dtmcNew = new DTMCSimple<Value>(numBlocks);
 		for(int b = 0; b < numBlocks; b++) {
 			int s = stateOf[b];
