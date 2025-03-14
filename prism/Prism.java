@@ -24,7 +24,7 @@
 //	
 //==============================================================================
 
-package prism;
+package Extension.prism;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
