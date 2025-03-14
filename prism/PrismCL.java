@@ -32,6 +32,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +44,8 @@ import java.util.Map.Entry;
 import common.StackTraceHelper;
 import csv.CsvFormatException;
 import io.ModelExportOptions;
+import edu.jas.structure.Value;
+import explicit.Bisimulation;
 import io.ModelExportOptions.ModelExportFormat;
 import parser.Values;
 import parser.ast.Expression;
@@ -2079,6 +2083,47 @@ public class PrismCL implements PrismModelListener
 				else if (sw.equals("bisim")) {
 					prism.setDoBisim(true);
 				}
+
+				else if (sw.equals("algo")) {
+ 					prism.setDoBisim(true);
+ 					if (i < args.length - 1) {
+ 						String algorithm = args[++i];
+ 						prism.setAlgorithm(algorithm);
+ 						try {
+ 					   
+ 					       
+ 					        Class<?> algorithmClass = Class.forName(algorithm);
+ 					        Constructor<?> constructor = algorithmClass.getDeclaredConstructor(PrismComponent.class);
+ 					        Bisimulation<Value> bisim = (Bisimulation<Value>) constructor.newInstance(new PrismComponent());
+ 					        
+ 					        // add class cast exception
+ 					        
+ 					    } catch (ClassCastException e) {
+ 					    	errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
+ 					    			+ e.getClass().getName() + ". The class does not extend explicit.Bisimulation.java");
+ 						} catch (InstantiationException e) {
+ 					    	errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
+ 					    			+ e.getClass().getName() + ". Unable to instantiate class");
+ 						} catch (IllegalAccessException e) {
+ 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
+ 									+ e.getClass().getName() + ". Constructor is not accessible");
+ 						} catch (InvocationTargetException e) {
+ 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
+ 									+ e.getClass().getName() + ". Exception thrown by the constructor");
+ 						} catch (NoSuchMethodException e) {
+ 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
+ 									+ e.getClass().getName() + ". Constructor not found");
+ 						} catch (SecurityException e) {
+ 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: " 
+ 									+ e.getClass().getName() + ".");
+ 						} catch (ClassNotFoundException | NoClassDefFoundError e) {
+ 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: " 
+ 						            + e.getClass().getName() + ". Class "+ algorithm + " not found");
+ 						} 
+ 							
+ 					}
+ 					
+ 				}	
 
 				// Other switches - pass to PrismSettings
 
