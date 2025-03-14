@@ -24,7 +24,7 @@
 //	
 //==============================================================================
 
-package explicit;
+package Extension.explicit;
 
 import java.util.BitSet;
 import java.util.HashMap;
