@@ -2084,46 +2084,22 @@ public class PrismCL implements PrismModelListener
 					prism.setDoBisim(true);
 				}
 
-				else if (sw.equals("algo")) {
+				else if (sw.equals("Buchholz")) {
  					prism.setDoBisim(true);
- 					if (i < args.length - 1) {
- 						String algorithm = args[++i];
- 						prism.setAlgorithm(algorithm);
- 						try {
- 					   
- 					       
- 					        Class<?> algorithmClass = Class.forName(algorithm);
- 					        Constructor<?> constructor = algorithmClass.getDeclaredConstructor(PrismComponent.class);
- 					        Bisimulation<Value> bisim = (Bisimulation<Value>) constructor.newInstance(new PrismComponent());
- 					        
- 					        // add class cast exception
- 					        
- 					    } catch (ClassCastException e) {
- 					    	errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
- 					    			+ e.getClass().getName() + ". The class does not extend explicit.Bisimulation.java");
- 						} catch (InstantiationException e) {
- 					    	errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
- 					    			+ e.getClass().getName() + ". Unable to instantiate class");
- 						} catch (IllegalAccessException e) {
- 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
- 									+ e.getClass().getName() + ". Constructor is not accessible");
- 						} catch (InvocationTargetException e) {
- 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
- 									+ e.getClass().getName() + ". Exception thrown by the constructor");
- 						} catch (NoSuchMethodException e) {
- 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: "
- 									+ e.getClass().getName() + ". Constructor not found");
- 						} catch (SecurityException e) {
- 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: " 
- 									+ e.getClass().getName() + ".");
- 						} catch (ClassNotFoundException | NoClassDefFoundError e) {
- 							errorAndExit("Unable to run minimisation using algorithm " + algorithm + ". Exception type: " 
- 						            + e.getClass().getName() + ". Class "+ algorithm + " not found");
- 						} 
- 							
- 					}
- 					
- 				}	
+ 					prism.setAlgorithm("explicit.Buchholz");	
+ 				}
+				else if (sw.equals("DerisaviSplayTree")) {
+ 					prism.setDoBisim(true);
+ 					prism.setAlgorithm("explicit.DerisaviSplayTree");	
+ 				}
+				else if (sw.equals("DerisaviRedBlack")) {
+ 					prism.setDoBisim(true);
+ 					prism.setAlgorithm("explicit.DerisaviRedBlack");	
+ 				}
+				else if (sw.equals("Valmari")) {
+ 					prism.setDoBisim(true);
+ 					prism.setAlgorithm("explicit.Valmari");	
+ 				}
 
 				// Other switches - pass to PrismSettings
 
